@@ -1,5 +1,3 @@
-package com.purdue;
-
 import java.util.*;
 
 public class ClientFactory
@@ -31,7 +29,7 @@ public class ClientFactory
         }
         else
         {
-            Client c = new Client();
+            Client c = new Client(clientId);
             clientMap.put(clientId,c);
             return c;
         }

@@ -21,7 +21,8 @@ public class ClientFactory
         return myCf;
     }
 
-    public Client addClientToMap(String clientId)
+    public Client addClientToMap(String clientId, String firstName, String lastName, int ssn, String dob,
+                                 Boolean current, String skillSet)
     {
         if(clientMap.containsKey(clientId))
         {
@@ -29,27 +30,27 @@ public class ClientFactory
         }
         else
         {
-            Client c = new Client(clientId);
-            clientMap.put(clientId,c);
+            Client c = new Client(clientId, firstName, lastName, ssn, dob, current, skillSet);
+            clientMap.put(clientId, c);
             return c;
         }
     }
 
-    public void checkIn(String clientId)
-    {
-        Client c = addClientToMap(clientId);
-        currentList.add(c);
-        count++;
-        System.out.println("Client " + clientId + " Checked In");
-    }
-
-    public void checkOut(String clientId)
-    {
-        Client c = addClientToMap(clientId);
-        currentList.remove(c);
-        count--;
-        System.out.println("Client " + clientId + " Checked Out");
-    }
+//    public void checkIn(String clientId)
+//    {
+//        Client c = addClientToMap(clientId);
+//        currentList.add(c);
+//        count++;
+//        System.out.println("Client " + clientId + " Checked In");
+//    }
+//
+//    public void checkOut(String clientId)
+//    {
+//        Client c = addClientToMap(clientId);
+//        currentList.remove(c);
+//        count--;
+//        System.out.println("Client " + clientId + " Checked Out");
+//    }
 
     public Collection<Client> getClientInMap()
     {

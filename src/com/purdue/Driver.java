@@ -12,9 +12,17 @@ public class Driver
     public static void main(String[] args)
     {
         ClientFactory myCf = ClientFactory.getInstance();
-        Client c1 = myCf.addClientToMap("123456");
-        Client c2 = myCf.addClientToMap("654321");
+//        Client c1 = myCf.addClientToMap("123456","Adam", "Sullivan",
+//                345121234,"dec-2-14",true,"cook");
+//        Client c2 = myCf.addClientToMap("654321","Ada", "van",
+//                321009876,"dec-2-04",false,"clean");
 
+        myCf.addClientToMap("123456","Adam", "Sullivan",
+                345121234,"dec-2-14",true,"cook");
+        myCf.addClientToMap("654321","Ada", "van",
+                321009876,"dec-2-04",false,"clean");
+
+        System.out.println(myCf.getClientInMap());
         /*
         System.out.println(c1);
         System.out.println(c2);
@@ -144,4 +152,5 @@ public class Driver
 
         return menuBar;
     }
+
 }

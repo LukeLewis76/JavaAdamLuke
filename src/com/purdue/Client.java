@@ -8,10 +8,16 @@ public class Client
     private Boolean current;
     private String skillSet;
 
-    public Client(String clientId)
+    public Client(String clientId, String firstName, String lastName, int ssn, String dob, Boolean current,
+                  String skillSet)
     {
         this.clientId = clientId;
-        current = true;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.ssn = ssn;
+        this.dob = dob;
+        this.current = current;
+        this.skillSet = skillSet;
     }
 
     public String getClientId()

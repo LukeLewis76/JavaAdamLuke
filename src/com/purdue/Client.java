@@ -1,3 +1,5 @@
+import java.util.List;
+
 public class Client
 {
     private String clientId;
@@ -58,10 +60,14 @@ public class Client
     @Override
     public String toString()
     {
-        return "clientId:" + clientId + '\t' +
-                "firstName: " + firstName + '\t' +
-                "lastName: " + lastName + '\t' +
-                "ssn: " + ssn + '\t' +
-                "dob: " + dob;
+        return "Client{" +
+                "clientId='" + clientId + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", ssn=" + ssn +
+                ", dob='" + dob + '\'' +
+                ", current=" + current +
+                ", skillSet=" + skillSet +
+                '}' + "\n";
     }
 }

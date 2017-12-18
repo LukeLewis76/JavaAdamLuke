@@ -1,64 +1,122 @@
+import java.sql.*;
 import java.util.*;
 
 public class ClientFactory
 {
-    private static ClientFactory myCf = new ClientFactory();
+    public static String url = "jdbc:sqlite:c:/files/JavaRocks.db";
+    String sqlQuery = "SELECT * FROM Clients";
+    static Map<String, Client> clientMap = new TreeMap<>();
 
-    private Map<String, Client> clientMap;
-    private List<Client> currentList;
-    private int count = 0;
+    private static int clientId ;
+    private String firstName;
+    private String lastName;
+    private int ssn;
+    private String dob;
+    private String skill;
 
-    private ClientFactory()
+    public ClientFactory() throws SQLException
     {
-        count = 0;
-
-        clientMap = new HashMap<>();
-        currentList = new ArrayList<>();
-    }
-
-    public static ClientFactory getInstance()
-    {
-        return myCf;
-    }
-
-    public Client addClientToMap(String clientId, String firstName, String lastName, int ssn, String dob,
-                                 Boolean current, String skillSet)
-    {
-        if(clientMap.containsKey(clientId))
+        try
+        (
+            Connection conn = DriverManager.getConnection(url);
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sqlQuery)
+        )
         {
-            return clientMap.get(clientId);
+            while (rs.next())
+            {
+                clientId = rs.getInt("clientId");
+                firstName = rs.getString("FirstName");
+                lastName = rs.getString("LastName");
+                ssn = rs.getInt("SSN");
+                dob = rs.getString("DOB");
+                skill = rs.getString("Skill");
+
+                clientMap.put(lastName, new Client(clientId, firstName, lastName, ssn, dob, skill));
+
+//                System.out.println(firstName + "\t " + lastName + "\t " + dob);
+            }
+
         }
-        else
+        catch (SQLException e)
         {
-            Client c = new Client(clientId, firstName, lastName, ssn, dob, current, skillSet);
-            clientMap.put(clientId, c);
-            return c;
+            System.out.println("SQL ERROR:" + e.getMessage());
+
+            createTable();
         }
     }
 
-//    public void checkIn(String clientId)
-//    {
-//        Client c = addClientToMap(clientId);
-//        currentList.add(c);
-//        count++;
-//        System.out.println("Client " + clientId + " Checked In");
-//    }
-//
-//    public void checkOut(String clientId)
-//    {
-//        Client c = addClientToMap(clientId);
-//        currentList.remove(c);
-//        count--;
-//        System.out.println("Client " + clientId + " Checked Out");
-//    }
-
-    public Collection<Client> getClientInMap()
+    public static void createTable()
     {
-        return clientMap.values();
+        String sql = "CREATE TABLE Clients(clientId integer  PRIMARY KEY, FirstName text NOT NULL, LastName text NOT NULL," +
+                " SSN int, DOB text, Skill text);";
+        try (
+                Connection conn = DriverManager.getConnection(url);
+                Statement stmt = conn.createStatement()
+        )
+        {
+            stmt.execute(sql);
+            System.out.println("Table CREATED: Clients");
+            initialise();
+        } catch (SQLException e)
+        {
+//            System.out.println(e.getMessage());
+        }
+    }
+    public static void initialise()
+    {
+        String sql = "INSERT INTO Clients values(?,?,?,?,?,?);";
+        try(
+                Connection conn = DriverManager.getConnection(url);
+                PreparedStatement stmt = conn.prepareStatement(sql)
+        )
+        {
+            stmt.setInt(1,1);
+            stmt.setString(2,"firstName");
+            stmt.setString(3,"lastName");
+            stmt.setInt(4,123456789);
+            stmt.setString(5,"dob");
+            stmt.setString(6,"skill");
+            stmt.execute();
+            System.out.println("Inserted into: Clients");
+        }
+        catch (SQLException e)
+        {
+            System.out.println(e.getMessage());
+        }
     }
 
-    public int getCount()
+    public static void insert(String firstName, String lastName, int ssn, String dob,
+                              String skill) throws SQLException
     {
-        return count;
+        String sql = "INSERT INTO Clients values(?,?,?,?,?,?);";
+        try(
+                Connection conn = DriverManager.getConnection(url);
+                PreparedStatement stmt = conn.prepareStatement(sql)
+        )
+        {
+            stmt.setString(2,firstName);
+            stmt.setString(3,lastName);
+            stmt.setInt(4,ssn);
+            stmt.setString(5,dob);
+            stmt.setString(6,skill);
+            stmt.execute();
+            System.out.println("Inserted into: Clients");
+
+            clientMap.put(lastName, new Client(clientId, firstName, lastName, ssn, dob, skill));
+
+            Set set = clientMap.entrySet();
+            Iterator itty = set.iterator();
+            while (itty.hasNext())
+            {
+                Map.Entry cList = (Map.Entry)itty.next();
+                System.out.println(cList.getValue());
+            }
+        }
+        catch (SQLException e)
+        {
+            System.out.println(e.getMessage());
+        }
     }
 }
+

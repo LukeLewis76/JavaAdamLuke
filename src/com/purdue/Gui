@@ -1,0 +1,264 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+import java.sql.SQLException;
+import java.text.ParseException;
+
+public class Gui //implements ActionListener
+{
+    JPanel panel;
+    JFrame frame;
+    JButton jb1;
+    JButton jb2;
+    JTextField tf1;
+    JTextField tf2;
+    JTextField tf3;
+    JTextField tf4;
+    JTextField tf5;
+    JTextField tf6;
+
+    String string = "";
+    String clientID = "";
+    String fName = "";
+    String lName = "";
+    int ssn;
+    String ssnValue;
+    String dob = "";
+    String skill = "";
+
+    public Gui()
+    {
+//        ClientFactory myCf = ClientFactory.getInstance();
+//        Client c1 = myCf.addClientToMap("123456");
+//        Client c2 = myCf.addClientToMap("654321");
+
+        /*
+        System.out.println(c1);
+        System.out.println(c2);
+        myCf.checkIn(c1.getClientId());
+        myCf.checkIn(c2.getClientId());
+        System.out.println("The # of clients: " + myCf.getCount());
+        myCf.checkOut(c1.getClientId());
+        myCf.checkOut(c2.getClientId());
+        System.out.println("The # of clients: " + myCf.getCount());
+        */
+
+        //Setup Frame
+        frame = new JFrame("Adam and Luke - Final Project Demo");
+
+        frame.setJMenuBar(createMenuBar());
+        frame.setContentPane(createPanel());
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setLocation(500, 200);
+        frame.pack();
+        frame.setMaximizedBounds(new Rectangle(0, 0, 500, 500));
+        frame.setVisible(true);
+
+
+    }
+
+    public JPanel createPanel()
+    {
+        JPanel panel = new JPanel();
+
+        //Create Label
+        JLabel L1 = new JLabel("Client Id:");
+        JLabel L2 = new JLabel("First Name:");
+        JLabel L3 = new JLabel("Last Name:");
+        JLabel L4 = new JLabel("SSN:");
+        JLabel L5 = new JLabel("DOB:");
+        JLabel L6 = new JLabel("Skill Set:");
+
+        //Create Text Field
+        tf1 = new JTextField(30);
+        tf2 = new JTextField(30);
+        tf3 = new JTextField(30);
+        tf4 = new JTextField(30);
+        tf5 = new JTextField(30);
+        tf6 = new JTextField(30);
+
+
+        //Create Button
+        jb1 = new JButton("Save");
+        jb2 = new JButton("Clear");
+
+        theHandler handler = new theHandler();
+        //add listener to fields
+
+
+        //add listener to buttons
+        jb1.addActionListener(handler);
+        jb2.addActionListener(handler);
+
+        //Set Grid Bag as Layout
+        panel.setLayout(new GridBagLayout());
+        GridBagConstraints c = new GridBagConstraints();
+
+        //Add Label, textfield, and button
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.weightx = 1;
+        c.insets = new Insets(5, 5, 5, 5);
+        c.gridy = 1;
+        panel.add(L1, c);
+        c.gridy++;
+        panel.add(tf1, c);
+        c.gridy++;
+        panel.add(L2, c);
+        c.gridy++;
+        panel.add(tf2, c);
+        c.gridy++;
+        panel.add(L3, c);
+        c.gridy++;
+        panel.add(tf3, c);
+        c.gridy++;
+        panel.add(L4, c);
+        c.gridy++;
+        panel.add(tf4, c);
+        c.gridy++;
+        panel.add(L5, c);
+        c.gridy++;
+        panel.add(tf5, c);
+        c.gridy++;
+        panel.add(L6, c);
+        c.gridy++;
+        panel.add(tf6, c);
+        c.gridy++;
+        panel.add(jb1, c);
+        c.gridy++;
+        panel.add(jb2, c);
+
+        return panel;
+    }
+
+    public JMenuBar createMenuBar()
+    {
+        JMenuBar menuBar;
+        JMenu menu1, menu2, submenu1, submenu2;
+        JMenuItem menuItem1, menuItem2;
+
+        //Create the menu bar.
+        menuBar = new JMenuBar();
+
+        //Create Main Menu.
+        menu1 = new JMenu("Menu");
+        menu1.setMnemonic(KeyEvent.VK_F);
+        menu1.getAccessibleContext().setAccessibleDescription("Dealing with Files");
+        menu1.setBackground(Color.blue);
+        menuBar.add(menu1);
+
+        menu2 = new JMenu("Help");
+        menu2.setMnemonic(KeyEvent.VK_F);
+        menu2.getAccessibleContext().setAccessibleDescription("Help");
+        menu2.setBackground(Color.blue);
+        menuBar.add(menu2);
+
+        // Client submenu
+        submenu1 = new JMenu("Client");
+        submenu1.setMnemonic(KeyEvent.VK_S);
+        menuItem1 = new JMenuItem("New");
+        submenu1.add(menuItem1);
+        menuItem2 = new JMenuItem("Edit");
+        submenu1.add(menuItem2);
+        menu1.add(submenu1);
+
+        //Partner submenu
+        menu1.addSeparator();
+        submenu2 = new JMenu("Partner");
+        submenu2.setMnemonic(KeyEvent.VK_S);
+        menuItem1 = new JMenuItem("New");
+        submenu2.add(menuItem1);
+        menuItem2 = new JMenuItem("Edit");
+        submenu2.add(menuItem2);
+        menu1.add(submenu2);
+
+        return menuBar;
+    }
+
+
+    private class theHandler implements ActionListener
+    {
+        public void actionPerformed(ActionEvent e)
+        {
+
+            if (e.getSource() == jb1)
+            {
+                if (tf2.getText().isEmpty())
+                {
+                    JOptionPane.showMessageDialog(null, "Please fill in First Name field");
+                }
+
+                else if (tf3.getText().isEmpty())
+                {
+                    JOptionPane.showMessageDialog(null, "Please fill in Last Name field");
+                }
+
+                else if (tf4.getText().isEmpty())
+                {
+                    JOptionPane.showMessageDialog(null, "Please fill in SSN field (with numbers)");
+                }
+
+                else if (tf5.getText().isEmpty())
+                {
+                    JOptionPane.showMessageDialog(null, "Please fill in the Birthday field");
+                }
+
+                else if (tf6.getText().isEmpty())
+                {
+                    JOptionPane.showMessageDialog(null, "Please fill in a Skill");
+                }
+
+                else
+
+                    try
+                    {
+                        fName = tf2.getText().toString();
+                        lName = tf3.getText().toString();
+                        ssnValue = tf4.getText();
+                        ssn = Integer.parseInt(ssnValue);
+                        dob = tf5.getText();
+                        skill = tf6.getText();
+
+                        try
+                        {
+//                        ClientFactory insert = new ClientFactory();
+                            ClientFactory.insert(fName, lName, ssn, dob, skill);
+
+                        } catch (SQLException s)
+                        {
+                            System.out.println(s);
+                        }
+
+                        string = "Saved";
+
+                        JOptionPane.showMessageDialog(null, fName + " " + lName + "\n" + ssn);
+                        JOptionPane.showMessageDialog(null, string);
+                    } catch (NumberFormatException eSSN)
+                    {
+                        JOptionPane.showMessageDialog(null, "'" + ssnValue + "'" + " is not a number");
+
+                        tf4.setText(null);
+                        System.out.println(eSSN);
+                    }
+
+
+            }
+
+            else if (e.getSource() == jb2)
+            {
+                string = String.format("Start Fresh");
+                tf1.setText(null);
+                tf2.setText(null);
+                tf3.setText(null);
+                tf4.setText(null);
+                tf5.setText(null);
+                tf6.setText(null);
+                JOptionPane.showMessageDialog(null, string);
+
+            }
+
+
+        }
+    }
+
+}
+

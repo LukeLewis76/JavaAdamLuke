@@ -1,28 +1,24 @@
-import java.util.List;
-
 public class Client
 {
-    private String clientId;
+    private int clientId;
     private String firstName;
     private String lastName;
     private int ssn;
     private String dob;
-    private Boolean current;
-    private String skillSet;
+    private String skill;
 
-    public Client(String clientId, String firstName, String lastName, int ssn, String dob, Boolean current,
-                  String skillSet)
+    public Client(int clientId, String firstName, String lastName, int ssn, String dob, String skill)
     {
         this.clientId = clientId;
         this.firstName = firstName;
         this.lastName = lastName;
         this.ssn = ssn;
         this.dob = dob;
-        this.current = current;
-        this.skillSet = skillSet;
+        this.skill = skill;
     }
 
-    public String getClientId()
+
+    public int getClientId()
     {
         return clientId;
     }
@@ -32,14 +28,10 @@ public class Client
         return dob;
     }
 
-    public Boolean getCurrent()
-    {
-        return current;
-    }
 
     public String getSkillSet()
     {
-        return skillSet;
+        return skill;
     }
 
     public String getFirstName()
@@ -61,13 +53,8 @@ public class Client
     public String toString()
     {
         return "Client{" +
-                "clientId='" + clientId + '\'' +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", ssn=" + ssn +
-                ", dob='" + dob + '\'' +
-                ", current=" + current +
-                ", skillSet=" + skillSet +
-                '}' + "\n";
+                lastName + ", " + firstName + ", dob=" + dob +
+                ", skill=" + skill +
+                '}';
     }
 }
